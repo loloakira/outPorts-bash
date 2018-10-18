@@ -1,23 +1,38 @@
 #!/bin/bash
+#
+# Description:  This script is made to test a range of outgoing ports using an external server.
+#               By default, it's done using portquiz.net from port 1 to 65535
+#               Portquiz.net has some port already in use. For that reason, the script take a list of forbidden ports that will not be tested
+#
+# Author:   Laurent SANSELME
+# Date:     2018 - 10 - 19
+# Version:  0.1
 
-progToUse="none"
-portBegin="0"
-portEnd="0"
+
+# Variable to edit if wanted
 portForbid="22 25 222 224 445"
 externalServer="portquiz.net"
 
+# Global variables
+progToUse="none"
+portBegin="0"
+portEnd="0"
+
+
+# Function testing if a number is in a list
 function isInList() {
-		list=${1}
-		number=${2}
-		for toTest in ${list[@]}
-	do
-				if [ $toTest -eq $number ] ; then
-						return 0
-				fi
-		done
-		return 1
+    list=${1}
+    number=${2}
+    for toTest in ${list[@]}
+    do
+        if [ $toTest -eq $number ] ; then
+            return 0
+        fi
+    done
+    return 1
 }
 
+# Function testing if a variable is a number (Integer only)
 function isNumber() {
 	re='^[0-9]+$'
 	if ! [[ $1 =~ $re ]]
@@ -27,6 +42,7 @@ function isNumber() {
 	return 0
 }
 
+# Function displaying script usage and exiting with code 1
 function usage() {
 	echo "outPorts-bash is made to test a range of outgoing ports"
 	echo "Usage:"
@@ -40,6 +56,7 @@ function usage() {
 	exit 1
 }
 
+# Function executing the command with curl in the defined ports range
 function executeWithCurl() {
 	for portNum in $(seq $portBegin $portEnd)
 	do
@@ -52,6 +69,7 @@ function executeWithCurl() {
 	done
 }
 
+# Function executing the command with wget in the defined ports range
 function executeWithWget() {
 	for portNum in $(seq $portBegin $portEnd)
 	do
@@ -64,6 +82,9 @@ function executeWithWget() {
 	done
 }
 
+
+
+# Testing and verifying options passed in arguments
 while getopts "cnwb:e:" opt
 do
 	case $opt in
@@ -105,6 +126,7 @@ do
 	esac
 done
 
+# Analyze the program to use and execute it with default ports if none were specified
 if [ $progToUse = "none" ]
 then
 	usage
@@ -137,4 +159,5 @@ else
 	fi
 fi
 
+# Exit program once done
 exit 0
