@@ -1,9 +1,9 @@
 # outPorts-bash
-A little script to test a range of outgoing ports using portquiz
+A little script to test a range of outgoing ports using http://portquiz.net/
 
 # Description
 This script is made to test a range of outgoing ports using an external server.
-By default, it's done using portquiz.net from port 1 to 65535
+By default, it's done using http://portquiz.net/ from port 1 to 65535
 
 # Usage
 * -c 		: Use with curl
